@@ -10,9 +10,13 @@ class Pokemon(models.Model):
         return self.title
 
 
+def default_disappeared_at():
+    return timezone.now() + timezone.timedelta(hours=12)
+
+
 class PokemonEntity(models.Model):
     pokemon = models.ForeignKey(Pokemon, on_delete=models.CASCADE)
     lan = models.FloatField()
     lot = models.FloatField()
-    appeared_at = models.DateTimeField(default=None)
-    disappeared_at = models.DateTimeField(default=None)
+    appeared_at = models.DateTimeField(default=timezone.now)
+    disappeared_at = models.DateTimeField(default=default_disappeared_at)
