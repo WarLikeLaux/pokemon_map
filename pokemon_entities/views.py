@@ -4,6 +4,7 @@ import json
 from django.conf import settings
 from django.http import HttpResponseNotFound
 from django.shortcuts import render
+from django.utils import timezone
 
 from .models import Pokemon, PokemonEntity
 
@@ -37,11 +38,12 @@ def show_all_pokemons(request):
 
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
     for pokemon_entity in pokemons_entities:
-        add_pokemon(
-            folium_map, pokemon_entity.lat,
-            pokemon_entity.lon,
-            request.build_absolute_uri(pokemon_entity.pokemon.image.url) if pokemon_entity.pokemon.image else ''
-        )
+        if pokemon_entity.appeared_at <= timezone.now() <= pokemon_entity.disappeared_at:
+            add_pokemon(
+                folium_map, pokemon_entity.lat,
+                pokemon_entity.lon,
+                request.build_absolute_uri(pokemon_entity.pokemon.image.url) if pokemon_entity.pokemon.image else ''
+            )
 
     pokemons_on_page = []
     for pokemon in pokemons:
