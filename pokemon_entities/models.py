@@ -1,5 +1,8 @@
+import os
+
 from django.db import models
 from django.utils import timezone
+from dotenv import load_dotenv
 
 
 class Pokemon(models.Model):
@@ -15,7 +18,9 @@ class Pokemon(models.Model):
 
 
 def default_disappeared_at():
-    return timezone.now() + timezone.timedelta(hours=12)
+    load_dotenv()
+    disappearing_time = int(os.getenv("DISAPPEARING_TIME_IN_MINUTES", 30))
+    return timezone.now() + timezone.timedelta(minutes=disappearing_time)
 
 
 class PokemonEntity(models.Model):
