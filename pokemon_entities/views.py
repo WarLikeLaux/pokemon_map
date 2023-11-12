@@ -1,7 +1,5 @@
 import folium
-import json
 
-from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseNotFound
 from django.shortcuts import render
@@ -25,15 +23,11 @@ def add_pokemon(folium_map, lat, lon, image_url=DEFAULT_IMAGE_URL):
     )
     folium.Marker(
         [lat, lon],
-        # Warning! `tooltip` attribute is disabled intentionally
-        # to fix strange folium cyrillic encoding bug
         icon=icon,
     ).add_to(folium_map)
 
 
 def show_all_pokemons(request):
-    # with open('pokemon_entities/pokemons.json', encoding='utf-8') as database:
-    #     pokemons = json.load(database)['pokemons']
     pokemons = Pokemon.objects.all()
     pokemons_entities = PokemonEntity.objects.all()
 
@@ -43,7 +37,8 @@ def show_all_pokemons(request):
             add_pokemon(
                 folium_map, pokemon_entity.lat,
                 pokemon_entity.lon,
-                request.build_absolute_uri(pokemon_entity.pokemon.image.url) if pokemon_entity.pokemon.image else ''
+                request.build_absolute_uri(
+                    pokemon_entity.pokemon.image.url) if pokemon_entity.pokemon.image else ''
             )
 
     pokemons_on_page = []
@@ -72,9 +67,10 @@ def show_pokemon(request, pokemon_id):
         add_pokemon(
             folium_map, pokemon_entity.lat,
             pokemon_entity.lon,
-            request.build_absolute_uri(pokemon.image.url) if pokemon.image else '',
+            request.build_absolute_uri(
+                pokemon.image.url) if pokemon.image else '',
         )
-        
+
     pokemon_template = {
         'title_ru': pokemon.title,
         'title_en': pokemon.title_en,
@@ -82,13 +78,14 @@ def show_pokemon(request, pokemon_id):
         'img_url': request.build_absolute_uri(pokemon.image.url) if pokemon.image else '',
         'description': pokemon.description,
     }
-    
+
     if pokemon.previous_evolution:
         pokemon_template['previous_evolution'] = {
             'pokemon_id': pokemon.previous_evolution.id,
             'title_ru': pokemon.previous_evolution.title,
             'img_url': request.build_absolute_uri(pokemon.previous_evolution.image.url) if pokemon.previous_evolution else '',
         }
+
     next_evolution = pokemon.pokemon_set.first()
     if next_evolution:
         pokemon_template['next_evolution'] = {
@@ -96,7 +93,6 @@ def show_pokemon(request, pokemon_id):
             'title_ru': next_evolution.title,
             'img_url': request.build_absolute_uri(next_evolution.image.url) if next_evolution else '',
         }
-        
 
     return render(request, 'pokemon.html', context={
         'map': folium_map._repr_html_(), 'pokemon': pokemon_template
