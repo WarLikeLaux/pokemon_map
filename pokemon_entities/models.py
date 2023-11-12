@@ -16,8 +16,8 @@ def default_disappeared_at():
 
 class PokemonEntity(models.Model):
     pokemon = models.ForeignKey(Pokemon, on_delete=models.CASCADE)
-    lan = models.FloatField()
-    lot = models.FloatField()
+    lat = models.FloatField()
+    lon = models.FloatField()
     appeared_at = models.DateTimeField(default=timezone.now)
     disappeared_at = models.DateTimeField(default=default_disappeared_at)
     level = models.IntegerField(default=1)
