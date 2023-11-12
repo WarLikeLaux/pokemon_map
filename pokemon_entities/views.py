@@ -89,6 +89,14 @@ def show_pokemon(request, pokemon_id):
             'title_ru': pokemon.previous_evolution.title,
             'img_url': request.build_absolute_uri(pokemon.previous_evolution.image.url) if pokemon.previous_evolution else '',
         }
+    next_evolution = pokemon.pokemon_set.first()
+    if next_evolution:
+        pokemon_template['next_evolution'] = {
+            'pokemon_id': next_evolution.id,
+            'title_ru': next_evolution.title,
+            'img_url': request.build_absolute_uri(next_evolution.image.url) if next_evolution else '',
+        }
+        
 
     return render(request, 'pokemon.html', context={
         'map': folium_map._repr_html_(), 'pokemon': pokemon_template
