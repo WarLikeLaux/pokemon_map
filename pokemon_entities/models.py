@@ -39,13 +39,13 @@ class PokemonEntity(models.Model):
     )
     lat = models.FloatField("Широта")
     lon = models.FloatField("Долгота")
-    appeared_at = models.DateTimeField("Время появления", default=timezone.now)
-    disappeared_at = models.DateTimeField("Время исчезновения", default=default_disappeared_at)
-    level = models.IntegerField("Уровень", default=1)
-    health = models.IntegerField("Здоровье", default=100)
-    strength = models.IntegerField("Сила", default=10)
-    defence = models.IntegerField("Защита", default=10)
-    stamina = models.IntegerField("Выносливость", default=10)
+    appeared_at = models.DateTimeField("Время появления")
+    disappeared_at = models.DateTimeField("Время исчезновения")
+    level = models.IntegerField("Уровень")
+    health = models.IntegerField("Здоровье")
+    strength = models.IntegerField("Сила")
+    defence = models.IntegerField("Защита")
+    stamina = models.IntegerField("Выносливость")
 
     def __str__(self):
         return f"{self.pokemon.title} (lvl {self.level}) on {self.lat}, {self.lon}"
