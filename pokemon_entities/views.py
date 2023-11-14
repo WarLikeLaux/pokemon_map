@@ -15,10 +15,7 @@ DEFAULT_IMAGE_URL = (
 
 
 def get_pokemon_image_url(pokemon):
-    if pokemon.image:
-        return pokemon.image.url
-    else:
-        return DEFAULT_IMAGE_URL
+    return pokemon.image.url if pokemon.image else DEFAULT_IMAGE_URL
 
 
 def add_pokemon(folium_map, lat, lon, image_url=DEFAULT_IMAGE_URL):
