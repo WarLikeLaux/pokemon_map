@@ -56,7 +56,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='pokemonentity',
             name='disappeared_at',
-            field=models.DateTimeField(default=pokemon_entities.models.default_disappeared_at, verbose_name='Время исчезновения'),
+            field=models.DateTimeField(verbose_name='Время исчезновения'),
         ),
         migrations.AlterField(
             model_name='pokemonentity',
